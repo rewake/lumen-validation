@@ -22,6 +22,5 @@
     }
   },
   "type": "package",
-  "version": "0.0.1",
-  "minimum-stability": "dev"
+  "version": "0.0.1"
 }
