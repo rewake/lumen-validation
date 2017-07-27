@@ -1,7 +1,9 @@
 {
   "name": "rewake/lumen-validation",
+  "type": "library",
   "description": "Enhanced validation for Lumen",
   "keywords": ["validation", "lumen"],
+  "homepage": "http://github.com",
   "license": "proprietary",
   "authors": [
     {
@@ -21,6 +23,9 @@
       "Rewake\\": "src/Rewake"
     }
   },
-  "type": "package",
-  "version": "0.0.1"
+  "extra": {
+    "branch-alias": {
+      "dev-develop": "0.0.1-dev"
+    }
+  }
 }
