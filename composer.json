@@ -20,5 +20,8 @@
     "psr-4": {
       "Rewake\\": "src/Rewake"
     }
-  }
+  },
+  "type": "package",
+  "version": "0.0.1",
+  "minimum-stability": "dev"
 }
