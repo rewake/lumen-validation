@@ -1,7 +1,6 @@
 {
   "name": "rewake/lumen-validation",
   "description": "Enhanced validation for Lumen",
-  "minimum-stability": "stable",
   "keywords": ["validation", "lumen"],
   "license": "proprietary",
   "authors": [
