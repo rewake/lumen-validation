@@ -1,8 +1,9 @@
 {
   "name": "rewake/lumen-validation",
+  "type": "library",
   "description": "Enhanced validation for Lumen",
-  "minimum-stability": "stable",
   "keywords": ["validation", "lumen"],
+  "homepage": "http://github.com",
   "license": "proprietary",
   "authors": [
     {
@@ -20,6 +21,11 @@
   "autoload": {
     "psr-4": {
       "Rewake\\": "src/Rewake"
+    }
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-develop": "0.0.1-dev"
     }
   }
 }
