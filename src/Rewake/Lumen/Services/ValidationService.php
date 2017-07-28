@@ -3,9 +3,7 @@
 namespace Rewake\Lumen\Services;
 
 
-use Illuminate\Translation\Translator;
 use Illuminate\Validation\ValidationException;
-use Illuminate\Validation\Validator;
 use Rewake\Lumen\Validation\ValidationRuleInterface;
 
 /**
@@ -15,19 +13,12 @@ use Rewake\Lumen\Validation\ValidationRuleInterface;
  */
 class ValidationService
 {
-    /** @var Validator */
     private $validator;
 
-    /** @var Translator */
-    private $translator;
-
-    public function __construct(Validator $validator = null, Translator $translator = null)
+    public function __construct($app_validator)
     {
-        // Store or instantiate Validator
-        $this->validator = $validator ?: new Validator();
-
-        // Store or instantiate Translator
-        $this->translator = $translator ?: new Translator();
+        // TODO: may want to explore instantiation of validation factory or extension of validator here instead
+        $this->validator = $app_validator;
     }
 
     /**
@@ -47,35 +38,51 @@ class ValidationService
     public function validate($input, $rules, array $messages = [], array $customAttributes = [])
     {
         // See if we should be validating against a ValidationRuleInterface
-        if ($rules instanceof ValidationRuleInterface) {
+        if (is_subclass_of($rules, ValidationRuleInterface::class)) {
 
             // Create ArrayObject from $input & get data as array
             $data = (new \ArrayObject($input, \ArrayObject::STD_PROP_LIST))->getArrayCopy();
 
-            // Get default messages and apply overrides
-            /** @var ValidationRuleInterface $validationClass */
-            $messages = array_replace_recursive($this->defaultMessages(), $rules::messages());
+            // See if descriptor is provided
+            if (is_string($rules::descriptor())) {
 
-            // Add descriptor if provided by
-            if (!is_null($rules::descriptor())) {
-
-                $messages = $this->translator->trans('validation');
+                // Get default validation messages & apply overrides from $rules::class
+                $messages = array_replace_recursive(
+                    app('translator')->trans('validation'),
+                    $rules::messages()
+                );
 
                 // Replace message text with descriptor
                 array_walk_recursive($messages, function (&$message) use ($rules) {
                     $message = $rules::descriptor() . ' / ' . $message;
                 });
-            }
-        }
 
-        // Validate the model data
-        $this->validator->validate($data, $validationClass::rules(), $messages, $customAttributes);
+            } else {
+
+                // Simply grab message overrides form $rules::class
+                // TODO: there's probably a simpler/better way to do this
+                $messages = $rules::messages();
+            }
+
+            // Validate object data
+            $validator = $this->make($data, $rules::rules(), $messages, $customAttributes);
+
+        } else {
+
+            // Validate array data (this is the "default" functionality)
+            $validator = $this->make($input, $rules, $messages, $customAttributes);
+        }
 
         // Check for validation failure
-        if ($this->validator->fails()) {
+        if ($validator->fails()) {
 
             // Throw validation exception
-            throw new ValidationException($this->validator, $this->validator->errors()->getMessages());
+            throw new ValidationException($validator, $validator->errors()->getMessages());
         }
+    }
+
+    public function make($input, $rules, array $messages = [], array $customAttributes = []) {
+
+        return $this->validator->make($input, $rules, $messages, $customAttributes);
     }
 }

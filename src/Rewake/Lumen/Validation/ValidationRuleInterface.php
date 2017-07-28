@@ -8,21 +8,21 @@ namespace Rewake\Lumen\Validation;
 interface ValidationRuleInterface
 {
     /**
-     * Object descriptor to be used in validation exception messages, or null
+     * Object descriptor to be used in validation exception messages, or empty array
      *
-     * @return null|string
+     * @return array|string
      */
     public static function descriptor();
 
     /**
-     * Array of Validation rules
+     * Array of Validation rules, or empty array
      *
      * @return array
      */
     public static function rules();
 
     /**
-     * Array of Validation message overrides
+     * Array of Validation message overrides, or empty array
      *
      * @return array
      */
