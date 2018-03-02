@@ -41,7 +41,7 @@ class ValidationService
         if (is_subclass_of($rules, ValidationRuleInterface::class)) {
 
             // Create ArrayObject from $input & get data as array
-            $data = (new \ArrayObject($input, \ArrayObject::STD_PROP_LIST))->getArrayCopy();
+            $data = json_decode(json_encode($input), true);
 
             // See if descriptor is provided
             if (is_string($rules::descriptor())) {
