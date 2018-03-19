@@ -1,7 +1,7 @@
 # Enhanced Lumen Validation
 
 This library provides enhancements to the `illuminate/validation` package which will validate objects and classes
-instead of arrays "only". The default lumen validator has been wrapped to that all existing validation functionality
+instead of arrays "only". The default Lumen validator has been wrapped so that all existing validation functionality
 *should* be available, however this is not yet fully tested. 
 
 
