@@ -11,7 +11,18 @@ class CreateDefaultValidationLangFile
         // Determine src dir
         $srcDir = dirname((dirname(dirname(__FILE__))));
 
-        // Copy default validation file to resources folder
-        copy($srcDir.'/resources/lang/en/validation.php', 'resources/lang/en/validation.php');
+        // Set validation file paths
+        $source = $srcDir.'/resources/lang/en/validation.php';
+        $destination = 'resources/lang/en/validation.php';
+
+        // See if file already exists
+        if (!file_exists($destination)) {
+
+            // Create directory
+            mkdir('resources/lang/en/', 777, true);
+
+            // Copy default validation file to resources folder
+            copy($source, $destination);
+        }
     }
 }
